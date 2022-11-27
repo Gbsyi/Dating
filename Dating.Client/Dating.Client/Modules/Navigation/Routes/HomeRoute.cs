@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace Dating.Client.Modules.Navigation.Routes
 {
-    internal class Endpoint
+    internal class HomeRoute : RouteBase
     {
-        private event Action? _listeners;
-
-        public void AddListener(Action listener)
+        public Endpoint Pairs()
         {
-            listener += _listeners;
+            throw new NotImplementedException();
         }
 
-        public void Navigate()
+        public Endpoint Profile()
         {
-            _listeners?.Invoke();
+            throw new NotImplementedException();
         }
     }
 }
