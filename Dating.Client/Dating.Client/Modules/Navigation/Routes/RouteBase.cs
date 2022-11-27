@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dating.Client.Modules.Navigation.Routes
 {
-    internal class RouteBase
+    internal abstract class RouteBase
     {
     }
 }

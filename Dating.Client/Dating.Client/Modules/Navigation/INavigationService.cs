@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dating.Client.Modules.Navigation.Routes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Dating.Client.Modules.Navigation
 {
     internal interface INavigationService
     {
+        public void NavigateTo(List<string> Routes);
     }
 }
