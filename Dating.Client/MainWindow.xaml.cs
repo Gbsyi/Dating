@@ -12,27 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Dating.Client.Pages;
-using Dating.Client.Pages.Home;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Dating.Client
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IServiceProvider _serviceProvider;
-        public MainWindow(IServiceProvider serviceProvider)
+        public MainWindow()
         {
             InitializeComponent();
-            _serviceProvider = serviceProvider;
-        }
-
-        private void OnLoading(object sender, RoutedEventArgs e)
-        {
-            Nav.Navigate(_serviceProvider.GetRequiredService<Home>());
         }
     }
 }

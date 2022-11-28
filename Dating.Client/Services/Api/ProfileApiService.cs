@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dating.Client.Services.Abstractions
+namespace Dating.Client.Services.Api
 {
-    public interface IAuthService
+    internal class ProfileApiService
     {
     }
 }

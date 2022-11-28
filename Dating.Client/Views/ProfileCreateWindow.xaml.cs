@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dating.Client.Pages
+namespace Dating.Client.Views
 {
     /// <summary>
-    /// Логика взаимодействия для LoginPage.xaml
+    /// Логика взаимодействия для ProfileWindow.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class ProfileWindow : Page
     {
-        public LoginPage()
+        public ProfileWindow()
         {
             InitializeComponent();
         }

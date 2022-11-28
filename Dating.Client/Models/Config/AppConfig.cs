@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dating.Client.Modules.Navigation.Routes
+namespace Dating.Client.Models.Config
 {
-    internal abstract class RouteBase
+    public sealed record AppConfig
     {
+        public Guid? UserId { get; init; }
     }
 }
