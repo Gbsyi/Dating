@@ -52,7 +52,7 @@ namespace Dating.Client.Services.Auth
         public async Task<bool> TryLoginAsync(string login, string password, CancellationToken cancellationToken)
         {
             using var http = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Post, new Uri("http://localhost:5179/account/login"));
+            using var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{AppConstants.BaseUrl}/account/login"));
             request.Content = JsonContent.Create(new LoginVm
             {
                 Username = login,

@@ -20,7 +20,7 @@ public sealed record Profile : EntityBase
     public required string Description { get; init; }
     
     /// <summary>
-    /// Пол
+    /// Гендер
     /// </summary>
-    public required SexEnum Sex { get; init; }
+    public required Guid GenderFk { get; init; }
 }

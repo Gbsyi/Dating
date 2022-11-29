@@ -44,12 +44,7 @@ internal sealed class CreateProfileCommandHandler : IHttpRequestHandler<CreatePr
             Name = vm.Name,
             Age = vm.Age,
             Description = vm.Description,
-            Sex = vm.Sex switch
-            {
-                SexVmEnum.Female => SexEnum.Female,
-                SexVmEnum.Male => SexEnum.Male,
-                _ => throw new ApplicationException("Пол неизвестен")
-            }
+            GenderFk = vm.GenderId
         };
         var dbGenders = await _context.Genders.Where(x => vm.PreferredGenders.Contains(x.Id)).ToListAsync(cancellationToken);
         if (dbGenders.Count != vm.PreferredGenders.Count)

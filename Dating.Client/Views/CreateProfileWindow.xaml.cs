@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dating.Client.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,18 +12,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Dating.Client.Views
 {
     /// <summary>
-    /// Логика взаимодействия для ProfileWindow.xaml
+    /// Логика взаимодействия для CreateProfileWindow.xaml
     /// </summary>
-    public partial class ProfileWindow : Page
+    public partial class CreateProfileWindow : Window
     {
-        public ProfileWindow()
+        public CreateProfileWindow(IServiceProvider serviceProvider)
         {
+            var vm = serviceProvider.GetRequiredService<CreateProfileViewModel>();
+            DataContext = vm;
             InitializeComponent();
         }
     }

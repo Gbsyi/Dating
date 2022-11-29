@@ -12,7 +12,7 @@ namespace Dating.Client.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void NotifyChanged([CallerMemberName] string propertyName = "")
+        public void ChangeProperty([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

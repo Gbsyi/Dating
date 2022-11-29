@@ -1,5 +1,7 @@
-﻿using Dating.Client.Services.Auth;
+﻿using Dating.Client.Services.Api;
+using Dating.Client.Services.Auth;
 using Dating.Client.Services.Config;
+using Dating.Client.Services.Store;
 using Dating.Client.ViewModels;
 using Dating.Client.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,13 +41,18 @@ namespace Dating.Client
             // Services
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IConfigService, ConfigService>();
+            services.AddTransient<IProfileApiService, ProfileApiService>();
+            services.AddTransient<IGendersApiService, GendersApiService>();
+            services.AddSingleton<ProfileStore>();
 
             // Pages
             services.AddSingleton<LoginWindow>();
             services.AddSingleton<HomeWindow>();
-
+            services.AddSingleton<CreateProfileWindow>();
+            
             // ViewModels
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<CreateProfileViewModel>();
         }
     }
 }

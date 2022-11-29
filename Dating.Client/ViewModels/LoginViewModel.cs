@@ -20,7 +20,7 @@ namespace Dating.Client.ViewModels
             set 
             { 
                 _username = value;
-                NotifyChanged();
+                ChangeProperty();
             } 
         }
         private string _password = "";
@@ -30,7 +30,7 @@ namespace Dating.Client.ViewModels
             set
             {
                 _password = value;
-                NotifyChanged();
+                ChangeProperty();
             }
         }
         private string? _error = null;
@@ -40,7 +40,7 @@ namespace Dating.Client.ViewModels
             set
             {
                 _error = value;
-                NotifyChanged();
+                ChangeProperty();
             }
         }
         public IAsyncRelayCommand LoginCommand { get; private set; }
