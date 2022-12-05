@@ -3,10 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Dating.Client.Views"
+        xmlns:local="clr-namespace:Dating.Client.Views" xmlns:viewmodels="clr-namespace:Dating.Client.ViewModels"
         mc:Ignorable="d"
-        Title="HomeWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="HomeWindow" Height="800" Width="800" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <viewmodels:HomeWindowViewModel></viewmodels:HomeWindowViewModel>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50px"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50px"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="{Binding Picture}"/>
+                <StackPanel Grid.Column="1" DataContext="{Binding Pair}">
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Имя:</Label>
+                        <Label Content="{Binding Name}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Пол: </Label>
+                        <Label Content="{Binding GenderName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Возраст: </Label>
+                        <Label Content="{Binding Age}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Описание: </Label>
+                        <Label Content="{Binding Description}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="X"/>
+                <Button Grid.Column="1" Content="&lt;3" Command="{Binding Like}"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button>Мои пары</Button>
+        </Grid>
     </Grid>
 </Window>

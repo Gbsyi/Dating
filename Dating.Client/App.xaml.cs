@@ -43,6 +43,8 @@ namespace Dating.Client
             services.AddSingleton<IConfigService, ConfigService>();
             services.AddTransient<IProfileApiService, ProfileApiService>();
             services.AddTransient<IGendersApiService, GendersApiService>();
+            services.AddTransient<IPairService, PairService>();
+            services.AddTransient<IPictureService, PictureService>();
             services.AddSingleton<ProfileStore>();
 
             // Pages
@@ -52,6 +54,7 @@ namespace Dating.Client
             
             // ViewModels
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<HomeWindowViewModel>();
             services.AddTransient<CreateProfileViewModel>();
         }
     }

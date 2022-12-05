@@ -1,4 +1,5 @@
 ﻿using Dating.Client.Services.Api;
+using Dating.Client.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,18 @@ namespace Dating.Client.Views
         private IProfileApiService _profileApi;
         private readonly IServiceProvider _serviceProvider;
         private CreateProfileWindow? _createProfileWindow;
+        private readonly HomeWindowViewModel _viewModel;
 
         public HomeWindow(IProfileApiService profileApi, IServiceProvider serviceProvider)
         {
-            InitializeComponent();
             _profileApi = profileApi;
             _serviceProvider = serviceProvider;
+            //_viewModel = serviceProvider.GetRequiredService<HomeWindowViewModel>();
+            //DataContext = _viewModel;
+            InitializeComponent();
+            var dc = DataContext as HomeWindowViewModel;
+            dc.InitDeps(serviceProvider.GetRequiredService<IPairService>(), serviceProvider.GetRequiredService<IPictureService>());
+            _viewModel = dc;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -38,13 +45,20 @@ namespace Dating.Client.Views
             if (profile is null)
             {
                 _createProfileWindow = _serviceProvider.GetRequiredService<CreateProfileWindow>();
+                var dc = _createProfileWindow.DataContext as CreateProfileViewModel;
+                dc!.OnProfileCreatedEvent += LoadNextProfile;
                 _createProfileWindow.Show();
+            }
+            else
+            {
+                await LoadNextProfile();
             }
         }
 
-        private void LoadProfile()
+        private async Task LoadNextProfile()
         {
             _createProfileWindow?.Close();
+            await _viewModel.LoadNextPair();
         }
     }
 }

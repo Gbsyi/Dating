@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Dating.Client.ViewModels
 {
+    public delegate Task ActionAsync();
     internal class CreateProfileViewModel : ViewModelBase
     {
         private string _name = "";
@@ -88,7 +89,7 @@ namespace Dating.Client.ViewModels
         public IAsyncRelayCommand CreateProfile { get; private set; }
         public IAsyncRelayCommand LoadData { get; private set; }
 
-        public event Action? OnProfileCreatedEvent;
+        public event ActionAsync? OnProfileCreatedEvent;
 
 
         public CreateProfileViewModel(IProfileApiService profileApiService, ProfileStore profileStore, IGendersApiService gendersApiService)
@@ -104,9 +105,9 @@ namespace Dating.Client.ViewModels
                     PreferredGenders = PrefferedGenders
                 }, cancellationToken);
 
-                var profile = await profileApiService.GetProfileAsync();
+                var profile = await profileApiService.GetProfileAsync(cancellationToken);
                 profileStore.Profile = profile!;
-                OnProfileCreatedEvent?.Invoke();
+                await OnProfileCreatedEvent.Invoke();
             });
             LoadData = new AsyncRelayCommand(async () =>
             {

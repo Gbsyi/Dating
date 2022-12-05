@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dating.Client.ViewModels
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -13,6 +13,7 @@ public interface IDatingDbContext
     public DbSet<Chat> Chats { get; init; }
     public DbSet<Gender> Genders { get; init; }
     public DbSet<UserOrientation> UserOrientations { get; init; }
+    public DbSet<Picture> Pictures { get; init; }
     
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

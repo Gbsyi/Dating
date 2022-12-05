@@ -15,6 +15,6 @@ internal sealed class ProfileEntityConfiguration : IEntityTypeConfiguration<Prof
         builder.Property(x => x.GenderFk).HasComment("Пол пользователя");
         builder.HasOne<Gender>().WithMany().HasForeignKey(x => x.GenderFk);
         builder.HasOne<User>().WithOne().HasForeignKey<Profile>(x => x.Id);
-
+        builder.HasOne<Picture>().WithOne().HasForeignKey<Profile>(x => x.PictureFk);
     }
 }

@@ -20,10 +20,20 @@ namespace Dating.Client.Services.Api
             _authService = authService;
         }
 
-        public Task<CreateProfileResultVm> CreateProfileAsync(CreateProfileVm profile, CancellationToken cancellationToken = default)
+        public async Task<CreateProfileResultVm> CreateProfileAsync(CreateProfileVm profile, CancellationToken cancellationToken = default)
         {
-            // TODO: Создание профиля
-            throw new NotImplementedException();
+            var userId = _authService.GetUserId();
+            using var http = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{AppConstants.BaseUrl}/profile/create");
+            request.Headers.Add("IdAuth", userId.ToString());
+            request.Content = JsonContent.Create(profile);
+            var response = await http.SendAsync(request, cancellationToken);
+            var result = await response.Content.ReadFromJsonAsync<CreateProfileResultVm>();
+            if (result is null)
+            {
+                throw new ApplicationException("Пустой ответ");
+            }
+            return result;
         }
 
         public async Task<ProfileVm?> GetProfileAsync(CancellationToken cancellationToken = default)
@@ -32,7 +42,7 @@ namespace Dating.Client.Services.Api
             using var http = new HttpClient();
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{AppConstants.BaseUrl}/profile");
             request.Headers.Add("IdAuth", userId.ToString());
-            var response = await http.SendAsync(request);
+            var response = await http.SendAsync(request, cancellationToken);
             var result = await response.Content.ReadFromJsonAsync<GetProfileResult>();
             if (result is null)
             {

@@ -9,9 +9,6 @@ public enum PairStatusEnum
     /// <summary>
     /// Получен отказ
     /// </summary>
-    Rejected,
-    /// <summary>
-    /// Взаимный лайк
-    /// </summary>
-    Mutual
+    Rejected
+
 }

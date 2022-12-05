@@ -14,7 +14,8 @@ public class DatingDbContext : DbContext, IDatingDbContext
     public required DbSet<Chat> Chats { get; init; }
     public required DbSet<Gender> Genders { get; init; }
     public required DbSet<UserOrientation> UserOrientations { get; init; }
-    
+    public required DbSet<Picture> Pictures { get; init; }
+
     public DatingDbContext(DbContextOptions<DatingDbContext> options)
         :base(options)
     {

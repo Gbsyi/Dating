@@ -23,4 +23,9 @@ public sealed record Profile : EntityBase
     /// Гендер
     /// </summary>
     public required Guid GenderFk { get; init; }
+
+    /// <summary>
+    /// Фото профиля
+    /// </summary>
+    public Guid? PictureFk { get; set; }
 }

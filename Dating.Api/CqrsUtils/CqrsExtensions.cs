@@ -11,6 +11,14 @@ public static class CqrsExtensions
         return app;
     }
     
+    public static IEndpointRouteBuilder MediatePost<TRequest>(this IEndpointRouteBuilder app, string template) where TRequest : IHttpRequest
+    {
+        app.MapPost(template,
+            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request));
+        
+        return app;
+    }
+    
     public static IEndpointRouteBuilder MediatePost<TRequest, TResult>(this IEndpointRouteBuilder app, string template) where TRequest : IHttpRequest
     {
         app.MapPost(template,
