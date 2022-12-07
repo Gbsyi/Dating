@@ -72,7 +72,7 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
             // Если лайк взаимный - создаём пару, лайки удаляем
             if (dbLike.PairStatus == PairStatusEnum.Liked)
             {
-                var chat = new Chat
+                var chat = new Domain.Models.Chat
                 {
                     Id = Guid.NewGuid(),
                     IsActive = true
@@ -84,14 +84,31 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
                     MatchedUserFk = likedProfile.Id,
                     ChatFk = chat.Id
                 };
+                
+                var pair2 = new Domain.Models.Pair
+                {
+                    UserFk = likedProfile.Id, 
+                    MatchedUserFk = profile.Id,
+                    ChatFk = chat.Id
+                };
 
                 _context.Pairs.Add(pair);
+                _context.Pairs.Add(pair2);
                 _context.Chats.Add(chat);
                 _context.Likes.Remove(dbLike);
+                await _context.SaveChangesAsync(cancellationToken);
+                return Results.Ok(new LikePairResultVm
+                {
+                    IsMutual = true
+                });
             }
         }
 
+        _context.Likes.Add(like);
         await _context.SaveChangesAsync(cancellationToken);
-        return Results.Ok();
+        return Results.Ok(new LikePairResultVm
+        {
+            IsMutual = false
+        });
     }
 }

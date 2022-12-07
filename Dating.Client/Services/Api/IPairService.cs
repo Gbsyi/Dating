@@ -12,5 +12,8 @@ namespace Dating.Client.Services.Api
     public interface IPairService
     {
         public Task<NextPairVm?> GetNextPairAsync(CancellationToken cancellationToken = default);
+        public Task<IList<PairVm>> GetUserPairsAsync(CancellationToken cancellationToken = default);
+        public Task<LikePairResultVm> LikeProfileAsync(LikePairVm vm, CancellationToken cancellationToken = default);
+        public Task<bool> DisikeProfileAsync(LikePairVm vm, CancellationToken cancellationToken = default);
     }
 }

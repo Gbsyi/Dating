@@ -1,4 +1,5 @@
 ﻿using Dating.Api.Modules.Account;
+using Dating.Api.Modules.Chat;
 using Dating.Api.Modules.Gender;
 using Dating.Api.Modules.Pair;
 using Dating.Api.Modules.Picture;
@@ -14,5 +15,6 @@ public static class MinimalApiConfiguration
         app.AddProfileEndpoints();
         app.AddGendersApiConfig(); 
         app.AddPairEndpoints();
+        app.AddChatEndpoints();
     }
 }

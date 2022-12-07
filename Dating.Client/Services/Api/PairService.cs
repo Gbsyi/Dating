@@ -20,6 +20,17 @@ namespace Dating.Client.Services.Api
             _authService = authService;
         }
 
+        public async Task<bool> DisikeProfileAsync(LikePairVm vm, CancellationToken cancellationToken = default)
+        {
+            var userId = _authService.GetUserId();
+            using var http = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{AppConstants.BaseUrl}/pair/dislike");
+            request.Headers.Add("IdAuth", userId.ToString());
+            request.Content = JsonContent.Create(vm);
+            var response = await http.SendAsync(request, cancellationToken);
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<NextPairVm?> GetNextPairAsync(CancellationToken cancellationToken)
         {
             var userId = _authService.GetUserId();
@@ -32,10 +43,33 @@ namespace Dating.Client.Services.Api
                 var result = await response.Content.ReadFromJsonAsync<NextPairVm?>();
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
+        }
+
+        public async Task<IList<PairVm>> GetUserPairsAsync(CancellationToken cancellationToken = default)
+        {
+            var userId = _authService.GetUserId();
+            using var http = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{AppConstants.BaseUrl}/pair/pairs");
+            request.Headers.Add("IdAuth", userId.ToString());
+            var response = await http.SendAsync(request, cancellationToken);
+            var result = await response.Content.ReadFromJsonAsync<IList<PairVm>>();
+            return result;
+        }
+
+        public async Task<LikePairResultVm> LikeProfileAsync(LikePairVm vm, CancellationToken cancellationToken = default)
+        {
+            var userId = _authService.GetUserId();
+            using var http = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{AppConstants.BaseUrl}/pair/like");
+            request.Headers.Add("IdAuth", userId.ToString());
+            request.Content = JsonContent.Create(vm);
+            var response = await http.SendAsync(request, cancellationToken);
+            var result = await response.Content.ReadFromJsonAsync<LikePairResultVm>();
+            return result;
         }
     }
 }

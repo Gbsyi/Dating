@@ -14,5 +14,6 @@ public static class PairApiConfig
         group.MediateGet<GetNextPairQuery>("/next");
         group.MediatePost<LikePairCommand>("/like");
         group.MediatePost<DislikePairCommand>("/dislike");
+        group.MediateGet<GetUserPairsQuery>("/pairs");
     }
 }

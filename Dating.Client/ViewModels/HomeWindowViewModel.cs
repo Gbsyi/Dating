@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Dating.Client.Models;
 using Dating.Client.Services.Api;
 using Dating.Shared.Models.Pair;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -60,26 +63,66 @@ namespace Dating.Client.ViewModels
             }
         }
 
+        public ObservableCollection<PairVm> Pairs { get; set; } = new ObservableCollection<PairVm>();
+        public IList PairsSet
+        {
+            get { return Pairs; }
+            set
+            {
+                Pairs.Clear();
+                foreach (PairVm vm in value)
+                {
+                    Pairs.Add(vm);
+                }
+            }
+        }
 
         public IAsyncRelayCommand Like { get; init; }
+        public IAsyncRelayCommand Dislike { get; init; }
 
-        private IPairService _pairService;
-        private IPictureService _pictureService;
+        private IPairService _pairService = null!;
+        private IPictureService _pictureService = null!;
         public HomeWindowViewModel()
         {
-            Like = new AsyncRelayCommand(async () =>
+            Like = new AsyncRelayCommand(async (cancellationToken) =>
             {
-                throw new Exception();
+                if (_pair is null)
+                {
+                    return;
+                }
+
+                await _pairService.LikeProfileAsync(new LikePairVm
+                {
+                    LikedProfileId = _pair.UserId
+                }, cancellationToken);
+                await LoadNextPair(cancellationToken);
+                await LoadPairs(cancellationToken);
+            });
+
+            Dislike = new AsyncRelayCommand(async (cancellationToken) =>
+            {
+                if (_pair is null)
+                {
+                    return;
+                }
+
+                await _pairService.LikeProfileAsync(new LikePairVm
+                {
+                    LikedProfileId = _pair.UserId
+                }, cancellationToken);
+                await LoadNextPair(cancellationToken);
+                await LoadPairs(cancellationToken);
             });
         }
+
         public void InitDeps(IPairService pairService, IPictureService pictureService)
         {
             _pairService = pairService;
             _pictureService = pictureService;
         }
-        public async Task LoadNextPair()
+        public async Task LoadNextPair(CancellationToken cancellationToken = default)
         {
-            var pair = await _pairService.GetNextPairAsync();
+            var pair = await _pairService.GetNextPairAsync(cancellationToken);
             if (pair is null)
             {
                 HasPairs = false;
@@ -92,6 +135,18 @@ namespace Dating.Client.ViewModels
             }
 
             Loaded = true;
+        }
+
+        public async Task LoadPairs(CancellationToken cancellationToken = default)
+        {
+            var apiPairs = await _pairService.GetUserPairsAsync(cancellationToken);
+            var pairs = apiPairs.Select(x => new UserPairVm
+            {
+                ChatId = x.ChatId,
+                Name = x.Name,
+                UserId = x.UserId,  
+                PicturePath = new Uri($"{AppConstants.BaseUrl}/picture/{x.PictureId}")
+            });
         }
     }
 }
