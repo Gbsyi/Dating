@@ -1,0 +1,21 @@
+<div class="middle-card">
+  <div>Вход</div>
+  <form nz-form class="form" [formGroup]="form">
+    <nz-form-item>
+      <nz-form-label>Имя пользователя</nz-form-label>
+    </nz-form-item>
+    <nz-form-control>
+      <input nz-input formControlName="username"/>
+    </nz-form-control>
+    <nz-form-item>
+      <nz-form-label>Пароль</nz-form-label>
+    </nz-form-item>
+    <nz-form-control>
+      <input nz-input formControlName="password"/>
+    </nz-form-control>
+  </form>
+  <div class="buttons">
+    <button nz-button nzType="primary">Войти</button>
+    <button nz-button (click)="goToRegister()">Зарегистрироваться</button>
+  </div>
+</div>

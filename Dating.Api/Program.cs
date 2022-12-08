@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+// Конфигурация Сервисов
 builder.Services.AddControllers();
 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
@@ -22,8 +25,10 @@ builder.Services.AddDbContext<IDatingDbContext, DatingDbContext>(options =>
 
 builder.Services.AddScoped<IUserContext, UserContext>();
 
+// Настройка Middleware
 var app = builder.Build();
 
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 

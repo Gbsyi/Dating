@@ -65,8 +65,12 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
             if (dbLike.PairStatus == PairStatusEnum.Rejected)
             {
                 like.PairStatus = PairStatusEnum.Rejected;
+                _context.Likes.Add(like);
                 await _context.SaveChangesAsync(cancellationToken);
-                return Results.Ok();
+                return Results.Ok(new LikePairResultVm
+                {
+                    IsMutual = true
+                });
             }
 
             // Если лайк взаимный - создаём пару, лайки удаляем
