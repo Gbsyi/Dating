@@ -1,1 +1,67 @@
-<p>profile-create works!</p>
+<div class="middle-card">
+  <h2>Создание профиля</h2>
+  <form nz-form nzLayout="vertical" [formGroup]="form">
+    <nz-form-item>
+      <nz-form-label>Имя</nz-form-label>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <input nz-input formControlName="name" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Возраст</nz-form-label>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <input nz-input type="number" formControlName="age" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Описание</nz-form-label>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <textarea nz-input formControlName="description"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Пол</nz-form-label>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <nz-select
+          formControlName="genderId"
+          [nzOptions]="(gendersSelectOptions$ | async) ?? []"
+          nzAllowClear
+        ></nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Кого ищем?</nz-form-label>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <nz-select
+          nzAllowClear
+          [nzOptions]="(gendersSelectOptions$ | async) ?? []"
+          nzMode="multiple"
+          formControlName="preferredGenders"
+        ></nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div class="buttons">
+    <button
+      nz-button
+      nzSize="large"
+      nzType="primary"
+      [disabled]="!(formValid$ | async)"
+      [nzLoading]="profileCreatePending$ | async"
+      (click)="submit()"
+    >
+      Создать
+    </button>
+  </div>
+</div>
+
+<ng-template #errorTpl let-control>
+  <ng-container *ngIf="hasError(control, 'required')">
+    Это поле обязательное
+  </ng-container>
+</ng-template>

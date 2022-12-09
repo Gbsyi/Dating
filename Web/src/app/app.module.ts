@@ -11,13 +11,23 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { ru_RU } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import ru from '@angular/common/locales/ru';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {NzFormModule} from "ng-zorro-antd/form";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {NzButtonModule} from "ng-zorro-antd/button";
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ProfileCreateComponent } from './components/auth/profile-create/profile-create.component';
+import { AuthInterceptor } from './utils/auth.interceptor';
+import { BASE_API_URL } from './services/api/api-config';
+import { environment } from '../environments/environment';
+import {
+  NzNotificationModule,
+  NzNotificationService,
+} from 'ng-zorro-antd/notification';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 registerLocaleData(ru);
 
@@ -28,7 +38,7 @@ registerLocaleData(ru);
     MatchingComponent,
     HomeTemplateComponent,
     RegisterComponent,
-    ProfileCreateComponent
+    ProfileCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,9 +49,27 @@ registerLocaleData(ru);
     NzFormModule,
     NzInputModule,
     NzButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzNotificationModule,
+    NzSelectModule,
+    NzMenuModule,
+    NzSpinModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: ru_RU }],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: NZ_I18N,
+      useValue: ru_RU,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: BASE_API_URL,
+      useValue: environment.baseUrl,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

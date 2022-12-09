@@ -31,6 +31,6 @@ internal sealed class GetPictureQueryHandler : IHttpRequestHandler<GetPictureQue
         var picturePath = Path.Combine(_environment.WebRootPath, "pictures", $"{picture.Id}.jpg");
         var pictureStream = new FileStream(picturePath, FileMode.Open);
         
-        return Results.File(pictureStream);
+        return Results.File(pictureStream, contentType: "image/jpeg", fileDownloadName: $"{picture.Id}.jpg");
     }
 }

@@ -11,6 +11,17 @@ var configuration = builder.Configuration;
 // Конфигурация Сервисов
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,6 +39,7 @@ builder.Services.AddScoped<IUserContext, UserContext>();
 // Настройка Middleware
 var app = builder.Build();
 
+app.UseCors("DefaultPolicy");
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();

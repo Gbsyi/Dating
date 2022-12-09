@@ -1,20 +1,35 @@
 <div class="middle-card">
-  <div>Регистрация</div>
-  <form nz-form class="form">
+  <h2>Регистрация</h2>
+  <form nz-form class="form" nzLayout="vertical" [formGroup]="form">
     <nz-form-item>
-      <nz-form-label>Логин</nz-form-label>
+      <nz-form-label>Имя пользователя</nz-form-label>
+      <nz-form-control>
+        <input nz-input formControlName="username" />
+      </nz-form-control>
     </nz-form-item>
-    <nz-form-control>
-      <input nz-input/>
-    </nz-form-control>
     <nz-form-item>
       <nz-form-label>Пароль</nz-form-label>
+      <nz-form-control>
+        <input nz-input formControlName="password" />
+      </nz-form-control>
     </nz-form-item>
-    <nz-form-control>
-      <input nz-input/>
-    </nz-form-control>
   </form>
   <div class="buttons">
-    <button nz-button>Зарегистрироваться</button>
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="!(formValid$ | async)"
+      [nzLoading]="registerPending$ | async"
+      (click)="register()"
+    >
+      Зарегистрироваться
+    </button>
+    <button nz-button (click)="goToLogin()">Войти</button>
   </div>
 </div>
+
+<ng-template #errorTpl let-control>
+  <ng-container *ngIf="hasError(control, 'required')">
+    Это поле обязательное
+  </ng-container>
+</ng-template>

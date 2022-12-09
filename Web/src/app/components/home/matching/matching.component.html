@@ -1,1 +1,24 @@
-<p>matching works!</p>
+<ng-container *ngIf="pair$ | async as pair; else spinTpl">
+  <img
+    style="max-width: 100%; max-height: 100%"
+    src="http://127.0.0.1:8080/picture/978d2d43-336a-4331-9ca0-5a82e6e2a79f"
+  />
+  <div>Имя: {{ pair.name }}</div>
+  <div>Возраст: {{ pair.age }}</div>
+  <div>Пол: {{ pair.genderName }}</div>
+  <div>Описание {{ pair.description }}</div>
+  <div
+    style="
+      display: inline-flex;
+      gap: 1em;
+      width: 100%;
+      justify-content: space-around;
+    "
+  >
+    <button nz-button nzType="default">X</button>
+    <button nz-button nzType="primary"><3</button>
+  </div>
+</ng-container>
+<ng-template #spinTpl>
+  <nz-spin [nzSpinning]="loading$ | async"></nz-spin>
+</ng-template>
