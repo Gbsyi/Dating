@@ -46,17 +46,17 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
             });
         }
 
-        var dbLike = await _context.Likes.Where(x => x.PairFk == likedProfile.Id || x.UserFk == likedProfile.Id)
+        var dbLike = await _context.Likes.Where(x => x.PairFk == userId && x.UserFk == likedProfile.Id)
             .FirstOrDefaultAsync(cancellationToken);
         
         // Создаём лайк
         var like = new Like
         {
-            PairFk = likedProfile.Id,
             UserFk = profile.Id,
+            PairFk = likedProfile.Id,
             PairStatus = PairStatusEnum.Liked
         };
-        
+        _context.Likes.Add(like);
 
         // Если найден существующий лайк
         if (dbLike is not null)
@@ -99,7 +99,6 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
                 _context.Pairs.Add(pair);
                 _context.Pairs.Add(pair2);
                 _context.Chats.Add(chat);
-                _context.Likes.Remove(dbLike);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Results.Ok(new LikePairResultVm
                 {
@@ -108,7 +107,6 @@ public class LikePairCommandHandler : IHttpRequestHandler<LikePairCommand>
             }
         }
 
-        _context.Likes.Add(like);
         await _context.SaveChangesAsync(cancellationToken);
         return Results.Ok(new LikePairResultVm
         {

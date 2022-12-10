@@ -34,20 +34,20 @@ public sealed class GetNextPairQueryHandler : IHttpRequestHandler<GetNextPairQue
             where p.Id == userId
             select o.GenderFk).ToListAsync(cancellationToken);
 
-        var nextProfile = await (from p in _context.Profiles
-            join pic in _context.Pictures on p.PictureFk equals pic.Id
-            join g in _context.Genders on p.GenderFk equals g.Id
-            where p.Id != userId && genders.Contains(g.Id)
-            select new NextPairVm
-            {
-                UserId = p.Id,
-                Age = p.Age,
-                Name = p.Name,
-                Description = p.Description,
-                PictureId = pic.Id,
-                GenderName = g.Name
-            }).FirstOrDefaultAsync(cancellationToken);
+        var next = await (from p in _context.Profiles
+                          join g in _context.Genders on p.GenderFk equals g.Id
+                          join like in _context.Likes on userId equals like.UserFk into likes
+                          where p.Id != userId && genders.Contains(g.Id) && !likes.Select(x => x.PairFk).Contains(p.Id)
+                          select new NextPairVm
+                         {
+                             UserId = p.Id,
+                             Age = p.Age,
+                             Name = p.Name,
+                             Description = p.Description,
+                             PictureId = p.PictureFk ?? Guid.Empty,
+                             GenderName = g.Name
+                         }).FirstOrDefaultAsync(cancellationToken);
 
-        return Results.Ok(nextProfile);
+        return Results.Ok(next);
     }
 }

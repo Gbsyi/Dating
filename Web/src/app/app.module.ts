@@ -28,6 +28,10 @@ import {
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { PairsComponent } from './components/home/pairs/pairs.component';
+import { PairComponent } from './components/home/pair/pair.component';
+import { ChatComponent } from './components/home/chat/chat.component';
 
 registerLocaleData(ru);
 
@@ -39,6 +43,9 @@ registerLocaleData(ru);
     HomeTemplateComponent,
     RegisterComponent,
     ProfileCreateComponent,
+    PairsComponent,
+    PairComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +61,7 @@ registerLocaleData(ru);
     NzSelectModule,
     NzMenuModule,
     NzSpinModule,
+    NzIconModule,
   ],
   providers: [
     {

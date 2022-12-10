@@ -28,16 +28,7 @@ public sealed class GetMessagesQueryHandler : IHttpRequestHandler<GetMessagesQue
             return Results.Unauthorized();
         }
 
-        var chat = await _context.Chats.Where(x => x.Id == userId).FirstOrDefaultAsync(cancellationToken);
-        if (chat is null)
-        {
-            return Results.BadRequest(new BadRequestVm
-            {
-                ErrorMessage = "Чат не найден"
-            });
-        }
-        
-        var messages = _context.Messages.Where(x => x.ChatFk == request.ChatId)
+        var messages = await _context.Messages.Where(x => x.ChatFk == request.ChatId)
             .Select(x => new MessageVm
             {
                 MessageId = x.Id,
@@ -45,6 +36,7 @@ public sealed class GetMessagesQueryHandler : IHttpRequestHandler<GetMessagesQue
                 MessageDate = x.MessageDate,
                 Text = x.Text
             })
+            .OrderByDescending(x => x.MessageDate)
             .ToListAsync(cancellationToken);
         
         return Results.Ok(messages);

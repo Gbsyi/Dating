@@ -7,6 +7,9 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { ProfileCreateComponent } from './components/auth/profile-create/profile-create.component';
 import { AuthGuard } from './utils/auth.guard';
 import { ProfileGuard } from './utils/profile.guard';
+import { PairsComponent } from './components/home/pairs/pairs.component';
+import { PairComponent } from './components/home/pair/pair.component';
+import { ChatComponent } from './components/home/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -18,7 +21,24 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
+        redirectTo: 'matches',
+      },
+      {
+        path: 'matches',
+        pathMatch: 'full',
         component: MatchingComponent,
+        canActivate: [AuthGuard, ProfileGuard],
+      },
+      {
+        path: 'pairs',
+        pathMatch: 'full',
+        component: PairsComponent,
+        canActivate: [AuthGuard, ProfileGuard],
+      },
+      {
+        path: 'pairs/:chatId',
+        pathMatch: 'full',
+        component: ChatComponent,
         canActivate: [AuthGuard, ProfileGuard],
       },
     ],

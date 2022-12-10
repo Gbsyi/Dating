@@ -1,0 +1,13 @@
+<div class="pairs-list">
+  <ng-container *ngFor="let pair of (pairs$ | async) ?? []">
+    <div class="pair-card" (click)="goToChat(pair.chatId)">
+      <img
+        width="64px"
+        height="64px"
+        [src]="getPicUrl(pair.pictureId)"
+        [alt]="pair.name"
+      />
+      <div>{{ pair.name }}</div>
+    </div>
+  </ng-container>
+</div>

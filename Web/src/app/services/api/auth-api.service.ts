@@ -15,14 +15,7 @@ export class AuthApiService {
   loginPost(request: { username: string; password: string }) {
     return this.http.post<LoginResultVm>(
       `${this.baseUrl}/account/login`,
-      request,
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
+      request
     );
   }
 

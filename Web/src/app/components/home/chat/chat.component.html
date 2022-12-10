@@ -1,0 +1,26 @@
+<div style="display: inline-flex; width: 100%">
+  <input
+    nz-input
+    placeholder="Введите сообщение"
+    (keydown.enter)="sendMessage()"
+    [formControl]="messageText"
+  />
+  <button
+    nz-button
+    nzType="primary"
+    [nzLoading]="messageSending$ | async"
+    (click)="sendMessage()"
+  >
+    Отправить->
+  </button>
+</div>
+<div class="messages">
+  <ng-container *ngFor="let message of (messages$ | async) ?? []">
+    <div
+      class="message"
+      [ngClass]="isUserMessage(message.userId) ? 'my-message' : 'pair-message'"
+    >
+      {{ message.text }}
+    </div>
+  </ng-container>
+</div>

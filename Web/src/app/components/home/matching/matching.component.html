@@ -1,7 +1,7 @@
 <ng-container *ngIf="pair$ | async as pair; else spinTpl">
   <img
     style="max-width: 100%; max-height: 100%"
-    src="http://127.0.0.1:8080/picture/978d2d43-336a-4331-9ca0-5a82e6e2a79f"
+    [src]="getUrl(pair.pictureId)"
   />
   <div>Имя: {{ pair.name }}</div>
   <div>Возраст: {{ pair.age }}</div>
@@ -15,10 +15,12 @@
       justify-content: space-around;
     "
   >
-    <button nz-button nzType="default">X</button>
-    <button nz-button nzType="primary"><3</button>
+    <button nz-button nzType="default" (click)="dislike()">X</button>
+    <button nz-button nzType="primary" (click)="like()"><3</button>
   </div>
 </ng-container>
 <ng-template #spinTpl>
-  <nz-spin [nzSpinning]="loading$ | async"></nz-spin>
+  <nz-spin [nzSpinning]="loading$ | async">
+    <div>Новые пары отсутствуют :(</div>
+  </nz-spin>
 </ng-template>

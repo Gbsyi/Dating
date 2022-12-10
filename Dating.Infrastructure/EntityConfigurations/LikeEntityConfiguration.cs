@@ -10,6 +10,6 @@ public class LikeEntityConfiguration : IEntityTypeConfiguration<Like>
     {
         builder.HasKey(x => x.Id);
         builder.HasOne<User>().WithMany().HasForeignKey(x => x.UserFk);
-        builder.HasOne<Pair>().WithMany().HasForeignKey(x => x.PairFk);
+        builder.HasOne<User>().WithMany().HasForeignKey(x => x.PairFk);
     }
 }

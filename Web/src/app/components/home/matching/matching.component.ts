@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PairApiService } from '../../../services/api/pair-api.service';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { BehaviorSubject, finalize, switchMap } from 'rxjs';
 import { NextPairVm } from '../../../services/models/next-pair-vm';
 import { filterNil } from '@ngneat/elf';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class MatchingComponent implements OnInit {
   private pairInternal = new BehaviorSubject<NextPairVm | null>(null);
-  pair$ = this.pairInternal.pipe(filterNil());
+  pair$ = this.pairInternal.asObservable();
   loading$ = new BehaviorSubject<boolean>(true);
 
   constructor(
@@ -22,6 +22,10 @@ export class MatchingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadNextPair();
+  }
+
+  loadNextPair() {
     this.pairApiService
       .getNextPair()
       .pipe(finalize(() => this.loading$.next(false)))
@@ -30,8 +34,31 @@ export class MatchingComponent implements OnInit {
         error: (err) => this.notificationService.error('Ошибка', err.message),
       });
   }
-
   getUrl(pictureId: string) {
     return `${environment.baseUrl}/picture/${pictureId}`;
+  }
+
+  like() {
+    const pair = this.pairInternal.value;
+    if (pair) {
+      this.pairApiService.likeProfile(pair.userId).subscribe((result) => {
+        if (result.isMutual) {
+          this.notificationService.success('Пара', 'Это взаимный лайк');
+          this.loadNextPair();
+          // update pairs list
+        } else {
+          this.loadNextPair();
+        }
+      });
+    }
+  }
+
+  dislike() {
+    const pair = this.pairInternal.value;
+    if (pair) {
+      this.pairApiService.dislikeProfile(pair.userId).subscribe(() => {
+        this.loadNextPair();
+      });
+    }
   }
 }
